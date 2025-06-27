@@ -8,7 +8,8 @@ const CartModal = ({
   decreaseQuantity,
 }) => {
  
- 
+  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const discounted = (total * 0.9).toFixed(2); // 10% discount
 
   return (
     <div className="fixed top-20 right-10 z-50 bg-white shadow-2xl rounded-lg p-6 w-96 max-h-[80vh] overflow-y-auto border border-gray-300">
@@ -65,6 +66,12 @@ Your cart is empty.</p>
             </li>
           ))}
         </ul>
+      )}
+       {cart.length > 0 && (
+        <div className="mt-4  pt-2">
+          <p className="font-semibold mb-4">Total: ${total.toFixed(2)}</p>
+          <p className="text-gray-800 bg-green-300 px-4 py-2">After 10% Discount: ${discounted}</p>
+        </div>
       )}
 
       

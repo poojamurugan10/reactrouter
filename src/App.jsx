@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./RealTime/NavBar";
 import ProductList from "./RealTime/ProductList";
 import CartModal from "./RealTime/CartModal";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 
 const App = () => {
@@ -62,7 +63,14 @@ const decreaseQuantity = (productId) => {
           increaseQuantity={increaseQuantity}
           decreaseQuantity={decreaseQuantity}
         />
+        
       )}
+      <BrowserRouter>
+      <Routes>
+          <Route path="/" element={<ProductList cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} />} />
+  <Route path="/cart" element={<CartPage cart={cart} increaseQuantity={increaseQuantity} decreaseQuantity={decreaseQuantity} removeFromCart={removeFromCart} />} />
+        </Routes>
+        </BrowserRouter>
        
     </div>
   );
