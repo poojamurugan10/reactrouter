@@ -6,7 +6,7 @@ import { SiVirustotal } from "react-icons/si";
 
 
 
-const ProductItem = ({ product, addToCart }) => {
+const ProductItem = ({ product, inCart, addToCart, removeFromCart}) => {
   return (
     <div className="bg-white  p-4 shadow-2xl rounded-lg">
       <img
@@ -23,10 +23,24 @@ const ProductItem = ({ product, addToCart }) => {
 {product.rating.rate}</p> 
            <p className="text-md font-bold text-black  ml-3 flex gap-1"><SiVirustotal />
 {product.rating.count}</p></span>
-      <button onClick={() =>addToCart(product)} className="bg-cyan-600 font-bold text-white flex gap-3 p-3 ml-2 rounded hover:bg-cyan-950 ">
-        <AiOutlineShoppingCart />
-        Add To Cart
-      </button>
+      {/* ✅ Conditional Button */}
+      {inCart ? (
+        <button
+          onClick={() => removeFromCart(product.id)}
+          className="bg-red-600 font-bold text-white flex gap-3 p-3 ml-2 rounded hover:bg-red-800"
+        >
+          <AiOutlineShoppingCart />
+          Remove From Cart
+        </button>
+      ) : (
+        <button
+          onClick={() => addToCart(product)}
+          className="bg-cyan-600 font-bold text-white flex gap-3 p-3 ml-2 rounded hover:bg-cyan-950"
+        >
+          <AiOutlineShoppingCart />
+          Add To Cart
+        </button>
+      )}
     </div>
   );
 };

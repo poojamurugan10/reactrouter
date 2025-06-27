@@ -1,47 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import Navbar from './RealTime/NavBar';
-import ProductList from './RealTime/ProductList';
-import CartModal from './RealTime/CartModal';
-
+import React, { useEffect, useState } from "react";
+import Navbar from "./RealTime/NavBar";
+import ProductList from "./RealTime/ProductList";
+import CartModal from "./RealTime/CartModal";
 
 
 const App = () => {
-  
-  const [products,setProducts]= useState([])
-  const [cart,setCart]=useState([])
-  const [isModalOpen, setIsModalOpen]= useState(false)
+  const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect (()=>{
-     fetch("https://fakestoreapi.com/products")
-     .then((res)=>res.json())
-     .then((data)=>setProducts(data))
-  },[])
+  useEffect(() => {
+    fetch("https://fakestoreapi.com/products")
+      .then((res) => res.json())
+      .then((data) => setProducts(data));
+  }, []);
 
-const addToCart =(product) =>{
-    const productInCart = cart.find((item)=> item.id === product.id)
-    if (productInCart){
-      alert("Item already added to the cart")
-    }
-    else{
-      setCart([...cart,product])
-    }
-}
-
-const removeFromCart = (productId) =>{
-  setCart(cart.filter((item)=>item.id != productId))
-}
+  const addToCart = (product) => {
+     if (!cart.find((item) => item.id === product.id)) {
+    setCart([...cart, { ...product, quantity: 1 }]);
+  }
+};
 
 
 
+  const removeFromCart = (productId) => {
+    setCart(cart.filter((item) => item.id !== productId));
+  };
 
   return (
-    <div className='bg-gray-100 min-h-screen'>
-
-      <Navbar cartCount={cart.length} openCart={() => setIsModalOpen(true)}/>
-      <ProductList products={products} addToCart={addToCart}/>
+    <div className="bg-gray-100 min-h-screen">
+      <Navbar cartCount={cart.length} openCart={() => setIsModalOpen(true)} />
+      <ProductList products={products} cart={cart}
+        addToCart={addToCart}
+        removeFromCart={removeFromCart} />
       {isModalOpen && (
-        <CartModal cart={cart} closeModal = {()=>setIsModalOpen(false)} removeFromCart={removeFromCart}/>
+        <CartModal
+          cart={cart}
+          closeModal={() => setIsModalOpen(false)}
+          removeFromCart={removeFromCart}
+        />
       )}
+       
     </div>
   );
 };
