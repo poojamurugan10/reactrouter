@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./RealTime/NavBar";
 import ProductList from "./RealTime/ProductList";
 import CartModal from "./RealTime/CartModal";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-
+import { Route, Routes } from "react-router-dom";
+import CartPage from "./RealTime/CartPage";
 
 const App = () => {
   const [products, setProducts] = useState([]);
@@ -17,33 +17,31 @@ const App = () => {
   }, []);
 
   const addToCart = (product) => {
-     if (!cart.find((item) => item.id === product.id)) {
-    setCart([...cart, { ...product, quantity: 1 }]);
-  }
-};
+    if (!cart.find((item) => item.id === product.id)) {
+      setCart([...cart, { ...product, quantity: 1 }]);
+    }
+  };
 
-
-const increaseQuantity = (productId) => {
-  setCart((prevCart) =>
-    prevCart.map((item) =>
-      item.id === productId
-        ? { ...item, quantity: item.quantity + 1 }
-        : item
-    )
-  );
-};
-
-const decreaseQuantity = (productId) => {
-  setCart((prevCart) =>
-    prevCart
-      .map((item) =>
-        item.id === productId
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
+  const increaseQuantity = (productId) => {
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
       )
-      .filter((item) => item.quantity > 0) // Remove if quantity becomes 0
-  );
-};
+    );
+  };
+
+  const decreaseQuantity = (productId) => {
+    setCart(
+      (prevCart) =>
+        prevCart
+          .map((item) =>
+            item.id === productId
+              ? { ...item, quantity: item.quantity - 1 }
+              : item
+          )
+          .filter((item) => item.quantity > 0) // Remove if quantity becomes 0
+    );
+  };
 
   const removeFromCart = (productId) => {
     setCart(cart.filter((item) => item.id !== productId));
@@ -52,9 +50,12 @@ const decreaseQuantity = (productId) => {
   return (
     <div className="bg-gray-100 min-h-screen">
       <Navbar cartCount={cart.length} openCart={() => setIsModalOpen(true)} />
-      <ProductList products={products} cart={cart}
+      <ProductList
+        products={products}
+        cart={cart}
         addToCart={addToCart}
-        removeFromCart={removeFromCart} />
+        removeFromCart={removeFromCart}
+      />
       {isModalOpen && (
         <CartModal
           cart={cart}
@@ -63,15 +64,32 @@ const decreaseQuantity = (productId) => {
           increaseQuantity={increaseQuantity}
           decreaseQuantity={decreaseQuantity}
         />
-        
       )}
-      <BrowserRouter>
+
       <Routes>
-          <Route path="/" element={<ProductList cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} />} />
-  <Route path="/cart" element={<CartPage cart={cart} increaseQuantity={increaseQuantity} decreaseQuantity={decreaseQuantity} removeFromCart={removeFromCart} />} />
-        </Routes>
-        </BrowserRouter>
-       
+        <Route
+          path="/"
+          element={
+            <ProductList
+              products={products}
+              cart={cart}
+              addToCart={addToCart}
+              removeFromCart={removeFromCart}
+            />
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <CartPage
+              cart={cart}
+              increaseQuantity={increaseQuantity}
+              decreaseQuantity={decreaseQuantity}
+              removeFromCart={removeFromCart}
+            />
+          }
+        />
+      </Routes>
     </div>
   );
 };

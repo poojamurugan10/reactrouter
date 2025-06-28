@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const CartModal = ({
   cart,
@@ -7,7 +7,6 @@ const CartModal = ({
   increaseQuantity,
   decreaseQuantity,
 }) => {
- 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const discounted = (total * 0.9).toFixed(2); // 10% discount
 
@@ -24,12 +23,15 @@ const CartModal = ({
       </div>
 
       {cart.length === 0 ? (
-        <p className="text-gray-500 items-center"> <img
+        <p className="text-gray-500 items-center">
+          {" "}
+          <img
             src="https://static.vecteezy.com/system/resources/previews/016/462/240/non_2x/empty-shopping-cart-illustration-concept-on-white-background-vector.jpg"
             alt="Your Cart Is Empty"
             className="h-40 w-full object-contain mb-4"
           />
-Your cart is empty.</p>
+          Your cart is empty.
+        </p>
       ) : (
         <ul className="space-y-3">
           {cart.map((item) => (
@@ -67,14 +69,14 @@ Your cart is empty.</p>
           ))}
         </ul>
       )}
-       {cart.length > 0 && (
+      {cart.length > 0 && (
         <div className="mt-4  pt-2">
           <p className="font-semibold mb-4">Total: ${total.toFixed(2)}</p>
-          <p className="text-gray-800 bg-green-300 px-4 py-2">After 10% Discount: ${discounted}</p>
+          <p className="text-gray-800 bg-green-300 px-4 py-2">
+            After 10% Discount: ${discounted}
+          </p>
         </div>
       )}
-
-      
     </div>
   );
 };
